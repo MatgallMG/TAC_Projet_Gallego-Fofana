@@ -47,7 +47,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyviewHold
         this.startForResult = startForResult;
     }
 
-    public void setGithubUserList(List<Movie> movie_list) {
+    public void setMovieList(List<Movie> movie_list) {
         this.movie_list = movie_list;
         notifyDataSetChanged();
     }
@@ -167,11 +167,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyviewHold
                     m.getVoteCount());
             Toast.makeText(context, "Ajout aux favoris : "+newFav.getTitle(), Toast.LENGTH_SHORT).show();
             mainActivityViewModel.addFavMovie(newFav);
-        };
+        }
 
         public void removeFavMovieFromDB(Movie m) {
             Toast.makeText(context, "Retrait des favoris : "+m.getTitle(), Toast.LENGTH_SHORT).show();
             mainActivityViewModel.deleteFavMovie(m.getId());
-        };
+        }
     }
 }
