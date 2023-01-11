@@ -24,5 +24,5 @@ public interface FavMovieDao {
     void deleteById(int id);
 
     @Query("SELECT * from favmovie ORDER BY title ASC")
-    Observable<List<FavMovie>> getAllFavMovies();
+    public abstract Observable<List<FavMovie>> getAllFavMovies();
 }

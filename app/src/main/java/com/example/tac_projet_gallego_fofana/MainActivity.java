@@ -3,30 +3,16 @@ package com.example.tac_projet_gallego_fofana;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-
 
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.tac_projet_gallego_fofana.recycler.CustomAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class MainActivity extends AppCompatActivity {
-    //private String TAG = "MATDAV";
-    /*private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
-    private CustomAdapter customAdapter;
-    private Map<Integer, String> genre_dictionary = new HashMap<>();
-    private MainActivityViewModel mainActivityViewModel;*/
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
 
@@ -50,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.menulayout);
 
         final MovieFragment fragmentMovie = MovieFragment.newInstance();
-        //final FavFragment fragmentFavM = FragmentTwo.newInstance("B");
+        final FavorisFragment fragmentFavM = FavorisFragment.newInstance();
 
         viewPager.setAdapter(new FragmentStateAdapter(this) {
 
@@ -65,15 +51,14 @@ public class MainActivity extends AppCompatActivity {
                 if (position == 0) {
                     return fragmentMovie;
                 }
-                return null;
-                //return fragmentFavM;
+                return fragmentFavM;
             }
         });
 
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(position == 0 ? MovieFragment.TAB_NAME : "Favoris"/*FavFragment.TAB_NAME*/);
+                tab.setText(position == 0 ? MovieFragment.TAB_NAME : FavorisFragment.TAB_NAME);
             }
         });
         tabLayoutMediator.attach();

@@ -21,8 +21,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainActivityViewModel extends AndroidViewModel {
 
-    private final String LOGTAG = "MATDAV";
-    public MutableLiveData<List<FavMovie>> allFavMovies;
+    private final String LOG = "MATDAV";
+    public final MutableLiveData<List<FavMovie>> allFavMovies;
     private My_Repository repository;
 
     public MainActivityViewModel(@NonNull Application application) {
@@ -46,30 +46,28 @@ public class MainActivityViewModel extends AndroidViewModel {
 
                     @Override
                     public void onSubscribe(Disposable d) {
-                        Log.d(LOGTAG, "subscribe ON");
+                        Log.d(LOG, "subscribe ON");
                     }
 
                     @Override
                     public void onNext(List<FavMovie> personList) {
-                        Log.d(LOGTAG, "next");
+                        Log.d(LOG, "next");
                         allFavMovies.setValue(personList);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(LOGTAG, "ERREUR : " + e.getMessage());
+                        Log.d(LOG, "ERREUR : " + e.getMessage());
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.d(LOGTAG, "complete");
+                        Log.d(LOG, "complete");
                     }
                 });
     }
 
-    public LiveData<List<FavMovie>> getFavMovie() {
-        return allFavMovies;
-    }
+    public LiveData<List<FavMovie>> getFavMovie() { return allFavMovies; }
 
     public void addFavMovie(FavMovie favMovie) {
         repository.insert(favMovie);

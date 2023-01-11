@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,11 +27,13 @@ import com.example.tac_projet_gallego_fofana.api.Genre;
 import com.example.tac_projet_gallego_fofana.api.GenreCatalog;
 import com.example.tac_projet_gallego_fofana.api.Movie;
 import com.example.tac_projet_gallego_fofana.api.MovieCatalog;
-import com.example.tac_projet_gallego_fofana.recycler.CustomAdapterMovie;
+import com.example.tac_projet_gallego_fofana.data.entity.FavMovie;
+import com.example.tac_projet_gallego_fofana.recycler.CustomAdapterFavoris;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,18 +41,17 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link MovieFragment#newInstance} factory method to
+ * Use the {@link FavorisFragment#newInstance} factory method to
  * create an instance of this fragment.
- *
  */
-public class MovieFragment extends Fragment {
+public class FavorisFragment extends Fragment {
 
-    public static final String TAB_NAME = "Movies";
+    public static final String TAB_NAME = "Favoris";
 
-    private String TAG = "MATDAV";
+    private String TAG = "MATDAVFF";
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private CustomAdapterMovie customAdapter;
+    private CustomAdapterFavoris customAdapter;
     private Map<Integer, String> genre_dictionary = new HashMap<>();
     private MainActivityViewModel mainActivityViewModel;
 
@@ -70,8 +72,8 @@ public class MovieFragment extends Fragment {
      *
      * @return A new instance of fragment MovieFragment.
      */
-    public static MovieFragment newInstance() {
-        MovieFragment fragment = new MovieFragment();
+    public static FavorisFragment newInstance() {
+        FavorisFragment fragment = new FavorisFragment();
         /*
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -80,7 +82,7 @@ public class MovieFragment extends Fragment {
         return fragment;
     }
 
-    public MovieFragment() {
+    public FavorisFragment() {
         // Required empty public constructor
     }
 
@@ -88,7 +90,7 @@ public class MovieFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie, container, false);
+        return inflater.inflate(R.layout.fragment_favoris, container, false);
     }
 
     @Override
@@ -125,11 +127,15 @@ public class MovieFragment extends Fragment {
         callPopMovies.enqueue(new Callback<MovieCatalog>() {
             @Override
             public void onResponse(Call<MovieCatalog> call, Response<MovieCatalog> response) {
-                Log.d(TAG,"on response");
+                //Log.d(TAG,"on response");
                 List<Movie> movie_list = response.body().getResults();
-                customAdapter = new CustomAdapterMovie(view.getContext(), movie_list, mainActivityViewModel, genre_dictionary, startForResult);
+                List<FavMovie> listeFavoris = mainActivityViewModel.getFavMovie().getValue();
+                //Log.d(TAG,"observe");
+                mainActivityViewModel.getAllFavMovies();
+                getListGenre(movie_list,listeFavoris);
+                customAdapter = new CustomAdapterFavoris(view.getContext(), listeFavoris, mainActivityViewModel, genre_dictionary,startForResult);
                 recyclerView.setAdapter(customAdapter);
-                displayListOfMovies(movie_list);
+                displayListOfFavoris(listeFavoris);
 
             }
             @Override
@@ -137,14 +143,7 @@ public class MovieFragment extends Fragment {
                 Log.d(TAG,"on failure");
             }
         });
-    }
 
-    private void displayListOfMovies(List<Movie> movies){
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Movie movie : movies){
-            stringBuilder.append("-"+movie.getTitle()+"\n");
-        }
-        Log.d(TAG, "réponse = \n" + stringBuilder);
     }
 
     private void displayListOfGenres(List<Genre> genres){
@@ -153,5 +152,24 @@ public class MovieFragment extends Fragment {
             stringBuilder.append("-"+genre.getId()+" : "+genre.getName()+"\n");
         }
         Log.d(TAG, "réponse = \n" + stringBuilder);
+    }
+
+    private void displayListOfFavoris(List<FavMovie> favoris){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (FavMovie fav : favoris){
+            stringBuilder.append("-"+fav.getTitle()+"\n");
+        }
+        Log.d(TAG, "réponse = \n" + stringBuilder);
+    }
+
+    private void getListGenre(List<Movie> movieList, List<FavMovie> favMovieList){
+        for (FavMovie favM: favMovieList) {
+            for (int i = 0; i < movieList.size(); i++) {
+                if (Objects.equals(movieList.get(i).getId(), favM.getId())){
+                    favM.setGenreIds(movieList.get(i).getGenreIds());
+                    break;
+                }
+            }
+        }
     }
 }
