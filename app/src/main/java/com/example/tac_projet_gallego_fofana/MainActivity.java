@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
         Button buttonChangeViewVertical = findViewById(R.id.changeViewButton1);
         Button buttonChangeViewGrid = findViewById(R.id.changeViewButton2);
-        Toast.makeText(this, buttonChangeViewGrid.getText(), Toast.LENGTH_SHORT).show();
 
         buttonChangeViewVertical.setOnClickListener(new View.OnClickListener() {
             @Override
