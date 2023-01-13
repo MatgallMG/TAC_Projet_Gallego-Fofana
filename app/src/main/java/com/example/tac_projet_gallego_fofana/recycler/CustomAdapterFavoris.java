@@ -163,7 +163,9 @@ public class CustomAdapterFavoris extends RecyclerView.Adapter<CustomAdapterFavo
                     FavMovie currentFavMovie = favMovie_list.get(getAdapterPosition());
 
                     removeFavMovieFromDB(currentFavMovie);
-                    imageButtonFav.setImageResource(R.drawable.star_empty);
+                    favMovie_list.remove(currentFavMovie);
+                    notifyItemRemoved(getAdapterPosition());
+                    notifyItemRangeChanged(getAdapterPosition(), favMovie_list.size());
 
                 }
             });
