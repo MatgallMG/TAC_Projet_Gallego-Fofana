@@ -7,7 +7,7 @@
     android:background="@color/black">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
             android:layout_height="wrap_content"
@@ -23,28 +23,29 @@
                 android:background="@color/dark"
                 android:padding="25dp">
 
-                <Button
+                <ImageButton
                     android:id="@+id/TopReturnButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@color/soft_red"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@null"
                     android:onClick="navMainLayout"
-                    android:text="◄"
-                    android:textColor="@color/white"
-                    android:textSize="15dp"
+                    android:src="@drawable/fleche_courbe"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/return_btn" />
 
                 <ImageButton
                     android:id="@+id/favButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:alpha="0.5"
                     android:background="@null"
+                    android:contentDescription="@string/favButtonDesc"
                     android:gravity="center"
                     android:src="@drawable/star_empty"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    http:ignore="ImageContrastCheck" />
 
                 <TextView
                     android:id="@+id/itemDetailMovieTitle"
@@ -52,9 +53,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="50dp"
                     android:gravity="center"
-                    android:text="TextView"
+                    android:text="@string/textview"
                     android:textColor="@color/white"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/TopReturnButton"
@@ -66,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
                     android:gravity="center"
-                    android:text="TextView"
+                    android:text="@string/textview"
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -79,15 +80,16 @@
                     android:layout_marginTop="25dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieTagLine"></ImageView>
+                    app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieTagLine"
+                    android:contentDescription="@string/poster" />
 
                 <TextView
                     android:id="@+id/itemDetailMovieVote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:text="@string/textview"
                     android:textColor="@color/yellow"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:layout_marginTop="25dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +100,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
-                    android:text="TextView"
+                    android:text="@string/textview"
                     android:textColor="@color/white"
                     android:justificationMode="inter_word"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -110,7 +112,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="TextView"
+                    android:text="@string/textview"
                     android:textColor="@color/light_grey"
                     android:layout_marginTop="25dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -130,7 +132,7 @@
                         android:layout_width="64dp"
                         android:layout_height="20dp"
                         android:layout_marginTop="25dp"
-                        android:text="TextView"
+                        android:text="@string/textview"
                         android:textColor="@color/white"
                         android:gravity="center"
                         android:layout_weight="1"
@@ -143,7 +145,7 @@
                         android:layout_width="64dp"
                         android:layout_height="20dp"
                         android:layout_marginTop="25dp"
-                        android:text="TextView"
+                        android:text="@string/textview"
                         android:textColor="@color/white"
                         android:gravity="center"
                         android:layout_weight="1"
@@ -156,7 +158,7 @@
                         android:layout_width="64dp"
                         android:layout_height="20dp"
                         android:layout_marginTop="25dp"
-                        android:text="TextView"
+                        android:text="@string/textview"
                         android:textColor="@color/white"
                         android:gravity="center"
                         android:layout_weight="1"
@@ -172,14 +174,15 @@
                     android:layout_marginTop="25dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieInfos"></ImageView>
+                    app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieInfos"
+                    android:contentDescription="@string/backdrop" />
 
                 <TextView
                     android:id="@+id/itemDetailMovieStatus"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="TextView"
+                    android:text="@string/textview"
                     android:textColor="@color/light_grey"
                     android:layout_marginTop="25dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -194,8 +197,8 @@
                     android:layout_marginHorizontal="50dp"
                     android:background="@color/soft_red"
                     android:textColor="@color/white"
-                    android:text="Retour"
-                    android:textSize="20dp"
+                    android:text="@string/retour"
+                    android:textSize="20sp"
                     android:onClick="navMainLayout"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
