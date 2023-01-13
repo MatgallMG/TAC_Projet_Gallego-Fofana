@@ -15,28 +15,40 @@
         android:layout_height="match_parent"
         android:background="@color/dark">
 
-        <ImageView
-            android:id="@+id/itemDetailMovieImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></ImageView>
-
         <TextView
             android:id="@+id/itemDetailMovieTitle"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
             android:gravity="center"
+            android:onClick="navMainLayout"
             android:text="TextView"
             android:textColor="@color/white"
             android:textSize="20dp"
             android:textStyle="bold"
-            android:layout_marginTop="25dp"
-            android:onClick="navMainLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieImage" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/itemDetailMovieTagLine"
+            android:layout_width="64dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="25dp"
+            android:text="TextView"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieTitle" />
+
+        <ImageView
+            android:id="@+id/itemDetailMoviePoster"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieTagLine"></ImageView>
 
         <TextView
             android:id="@+id/itemDetailMovieNote"
@@ -48,18 +60,100 @@
             android:layout_marginTop="25dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/itemDetailMoviePoster" />
 
         <TextView
-            android:id="@+id/itemDetailMovieReleaseDate"
-            android:layout_width="64dp"
-            android:layout_height="20dp"
+            android:id="@+id/itemDetailMovieOverview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
+            android:layout_marginHorizontal="25dp"
             android:text="TextView"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieNote" />
+            app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieNote"/>
+
+        <TextView
+            android:id="@+id/itemMovieGenres"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="TextView"
+            android:textColor="@color/light_grey"
+            android:layout_marginTop="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieOverview" />
+
+        <LinearLayout
+            android:id="@+id/itemDetailMovieInfos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemMovieGenres">
+
+            <TextView
+                android:id="@+id/itemDetailMovieLanguage"
+                android:layout_width="64dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="25dp"
+                android:text="TextView"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_weight="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieNote"/>
+
+            <TextView
+                android:id="@+id/itemDetailMovieReleaseDate"
+                android:layout_width="64dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="25dp"
+                android:text="TextView"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_weight="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieNote"/>
+
+            <TextView
+                android:id="@+id/itemDetailMovieRuntime"
+                android:layout_width="64dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="25dp"
+                android:text="TextView"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_weight="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieNote"/>
+    </LinearLayout>
+
+        <ImageView
+            android:id="@+id/itemDetailMovieBackdrop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieInfos"></ImageView>
+
+        <TextView
+            android:id="@+id/itemMovieStatus"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="TextView"
+            android:textColor="@color/light_grey"
+            android:layout_marginTop="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieBackdrop" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
