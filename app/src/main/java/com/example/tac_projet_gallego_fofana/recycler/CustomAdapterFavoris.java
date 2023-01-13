@@ -35,13 +35,23 @@ public class CustomAdapterFavoris extends RecyclerView.Adapter<CustomAdapterFavo
     private MainActivityViewModel mainActivityViewModel;
     private Map<Integer, String> genre_dictionary;
     private ActivityResultLauncher<Intent> startForResult;
+    public int item_layout_type;
 
-    public CustomAdapterFavoris(Context context, List<FavMovie> favMovie_list, MainActivityViewModel mainActivityViewModel, Map<Integer, String> genre_dictionary, ActivityResultLauncher<Intent> startForResult) {
+    public CustomAdapterFavoris(Context context, List<FavMovie> favMovie_list, MainActivityViewModel mainActivityViewModel, Map<Integer, String> genre_dictionary, ActivityResultLauncher<Intent> startForResult, int item_layout_type) {
         this.context = context;
         this.favMovie_list = favMovie_list;
         this.mainActivityViewModel = mainActivityViewModel;
         this.genre_dictionary = genre_dictionary;
         this.startForResult = startForResult;
+        this.item_layout_type = item_layout_type;
+    }
+
+    public void setItemLayoutType(int item_layout_type) {
+        this.item_layout_type = item_layout_type;
+    }
+
+    public int getItemLayoutType() {
+        return this.item_layout_type;
     }
 
     public void setMovieList(List<FavMovie> favMovie_list) {

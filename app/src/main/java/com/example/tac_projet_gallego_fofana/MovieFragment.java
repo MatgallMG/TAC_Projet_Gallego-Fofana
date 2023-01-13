@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -47,11 +47,12 @@ public class MovieFragment extends Fragment {
     public static final String TAB_NAME = "Movies";
 
     private String TAG = "MATDAV";
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
+    protected RecyclerView recyclerView;
+    private GridLayoutManager layoutManager;
     private CustomAdapterMovie customAdapter;
     private Map<Integer, String> genre_dictionary = new HashMap<>();
     private MainActivityViewModel mainActivityViewModel;
+    private List<Movie> movie_list;
 
     ActivityResultLauncher<Intent> startForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -95,7 +96,7 @@ public class MovieFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerView);
-        layoutManager = new LinearLayoutManager(view.getContext());
+        layoutManager = new GridLayoutManager(view.getContext(), 1, GridLayoutManager.VERTICAL, false);
 
         recyclerView.setLayoutManager(layoutManager);
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
@@ -126,8 +127,8 @@ public class MovieFragment extends Fragment {
             @Override
             public void onResponse(Call<MovieCatalog> call, Response<MovieCatalog> response) {
                 Log.d(TAG,"on response");
-                List<Movie> movie_list = response.body().getResults();
-                customAdapter = new CustomAdapterMovie(view.getContext(), movie_list, mainActivityViewModel, genre_dictionary, startForResult);
+                movie_list = response.body().getResults();
+                customAdapter = new CustomAdapterMovie(view.getContext(), movie_list, mainActivityViewModel, genre_dictionary, startForResult, R.layout.item_layout);
                 recyclerView.setAdapter(customAdapter);
                 displayListOfMovies(movie_list);
 
@@ -137,6 +138,20 @@ public class MovieFragment extends Fragment {
                 Log.d(TAG,"on failure");
             }
         });
+    }
+
+    protected void displayLinear() {
+        if (customAdapter.getItemLayoutType() == R.layout.item_layout) return;
+        layoutManager.setSpanCount(1);
+        customAdapter.setItemLayoutType(R.layout.item_layout);
+        recyclerView.setAdapter(customAdapter);
+    }
+
+    protected void displayGrid() {
+        if (customAdapter.getItemLayoutType() == R.layout.item_layout_grid) return;
+        layoutManager.setSpanCount(2);
+        customAdapter.setItemLayoutType(R.layout.item_layout_grid);
+        recyclerView.setAdapter(customAdapter);
     }
 
     private void displayListOfMovies(List<Movie> movies){

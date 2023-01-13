@@ -38,13 +38,23 @@ public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.
     private MainActivityViewModel mainActivityViewModel;
     private Map<Integer, String> genre_dictionary;
     private ActivityResultLauncher<Intent> startForResult;
+    private int item_layout_type;
 
-    public CustomAdapterMovie(Context context, List<Movie> movie_list, MainActivityViewModel mainActivityViewModel, Map<Integer, String> genre_dictionary, ActivityResultLauncher<Intent> startForResult) {
+    public CustomAdapterMovie(Context context, List<Movie> movie_list, MainActivityViewModel mainActivityViewModel, Map<Integer, String> genre_dictionary, ActivityResultLauncher<Intent> startForResult, int item_layout_type) {
         this.context = context;
         this.movie_list = movie_list;
         this.mainActivityViewModel = mainActivityViewModel;
         this.genre_dictionary = genre_dictionary;
         this.startForResult = startForResult;
+        this.item_layout_type = item_layout_type;
+    }
+
+    public void setItemLayoutType(int item_layout_type) {
+        this.item_layout_type = item_layout_type;
+    }
+
+    public int getItemLayoutType() {
+        return this.item_layout_type;
     }
 
     public void setMovieList(List<Movie> movie_list) {
@@ -55,7 +65,7 @@ public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(item_layout_type, parent, false);
         return new MyViewHolder(view);
     }
 

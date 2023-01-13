@@ -7,6 +7,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
@@ -62,6 +64,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         tabLayoutMediator.attach();
+
+        Button buttonChangeViewVertical = findViewById(R.id.changeViewButton1);
+        Button buttonChangeViewGrid = findViewById(R.id.changeViewButton2);
+        Toast.makeText(this, buttonChangeViewGrid.getText(), Toast.LENGTH_SHORT).show();
+
+        buttonChangeViewVertical.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (viewPager.getCurrentItem() == 0)
+                    fragmentMovie.displayLinear();
+                else
+                    fragmentFavM.displayLinear();
+            }
+        });
+
+        buttonChangeViewGrid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (viewPager.getCurrentItem() == 0)
+                    fragmentMovie.displayGrid();
+                else
+                    fragmentFavM.displayGrid();
+            }
+        });
     }
 
 }

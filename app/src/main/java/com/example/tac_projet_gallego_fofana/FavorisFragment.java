@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -49,8 +49,8 @@ public class FavorisFragment extends Fragment {
     public static final String TAB_NAME = "Favoris";
 
     private String TAG = "MATDAVFF";
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
+    protected RecyclerView recyclerView;
+    private GridLayoutManager layoutManager;
     private CustomAdapterFavoris customAdapter;
     private Map<Integer, String> genre_dictionary = new HashMap<>();
     private MainActivityViewModel mainActivityViewModel;
@@ -97,7 +97,7 @@ public class FavorisFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerView);
-        layoutManager = new LinearLayoutManager(view.getContext());
+        layoutManager = new GridLayoutManager(view.getContext(), 1, GridLayoutManager.VERTICAL, false);
 
         recyclerView.setLayoutManager(layoutManager);
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
@@ -133,7 +133,7 @@ public class FavorisFragment extends Fragment {
                 //Log.d(TAG,"observe");
                 mainActivityViewModel.getAllFavMovies();
                 getListGenre(movie_list,listeFavoris);
-                customAdapter = new CustomAdapterFavoris(view.getContext(), listeFavoris, mainActivityViewModel, genre_dictionary,startForResult);
+                customAdapter = new CustomAdapterFavoris(view.getContext(), listeFavoris, mainActivityViewModel, genre_dictionary,startForResult, R.layout.item_layout);
                 recyclerView.setAdapter(customAdapter);
                 displayListOfFavoris(listeFavoris);
 
@@ -143,7 +143,20 @@ public class FavorisFragment extends Fragment {
                 Log.d(TAG,"on failure");
             }
         });
+    }
 
+    protected void displayLinear() {
+        if (customAdapter.getItemLayoutType() == R.layout.item_layout) return;
+        layoutManager.setSpanCount(1);
+        customAdapter.setItemLayoutType(R.layout.item_layout);
+        recyclerView.setAdapter(customAdapter);
+    }
+
+    protected void displayGrid() {
+        if (customAdapter.getItemLayoutType() == R.layout.item_layout_grid) return;
+        layoutManager.setSpanCount(2);
+        customAdapter.setItemLayoutType(R.layout.item_layout_grid);
+        recyclerView.setAdapter(customAdapter);
     }
 
     private void displayListOfGenres(List<Genre> genres){
