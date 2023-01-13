@@ -2,7 +2,6 @@ package com.example.tac_projet_gallego_fofana.recycler;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,13 +20,11 @@ import com.example.tac_projet_gallego_fofana.MainActivityViewModel;
 import com.example.tac_projet_gallego_fofana.R;
 
 import com.bumptech.glide.Glide;
-import com.example.tac_projet_gallego_fofana.api.Movie;
 import com.example.tac_projet_gallego_fofana.data.entity.FavMovie;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 public class CustomAdapterFavoris extends RecyclerView.Adapter<CustomAdapterFavoris.MyViewHolder> {
@@ -149,12 +146,12 @@ public class CustomAdapterFavoris extends RecyclerView.Adapter<CustomAdapterFavo
             movieBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Movie currentMovie = new Movie(favMovie_list.get(getAdapterPosition()));
-
                     Intent intent = new Intent(context, DetailActivity.class);
-                    intent.putExtra("MOVIE_GENRES", String.join(" | ", currentMovie.getGenreIds().stream().map((genreId) -> genre_dictionary.get(genreId)).collect(Collectors.toList())));
-                    intent.putExtra("IS_FAVORITED", R.drawable.star_filled);
-                    intent.putExtra("MOVIE", currentMovie);
+                    FavMovie currentMovie = favMovie_list.get(getAdapterPosition());
+                    intent.putExtra("MOVIE_ID", currentMovie.getId());
+                    intent.putExtra("MOVIE_POSTER_PATH", currentMovie.getPosterPath());
+                    intent.putExtra("MOVIE_BACKDROP_PATH", currentMovie.getBackdropPath());
+                    intent.putExtra("IS_FAVORITED", mainActivityViewModel.isAlreadyFavorite(currentMovie.getId()) ? R.drawable.star_filled : R.drawable.star_empty);
                     startForResult.launch(intent);
                 }
             });

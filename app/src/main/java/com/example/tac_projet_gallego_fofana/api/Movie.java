@@ -1,13 +1,12 @@
 package com.example.tac_projet_gallego_fofana.api;
 
-import java.io.Serializable;
 import java.util.List;
 
 import com.example.tac_projet_gallego_fofana.data.entity.FavMovie;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Movie implements Serializable {
+public class Movie {
 
     public Movie(FavMovie fm) {
         this.id = fm.getId();

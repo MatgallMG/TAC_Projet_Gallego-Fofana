@@ -69,8 +69,8 @@ public class MainActivityViewModel extends AndroidViewModel {
                 });
     }
 
-    public Boolean isAlreadyFavorite(Movie m) {
-        return allFavMovies.getValue().stream().map(f -> f.getId()).collect(Collectors.toList()).contains(m.getId());
+    public Boolean isAlreadyFavorite(int movieId) {
+        return allFavMovies.getValue().stream().map(f -> f.getId()).collect(Collectors.toList()).contains(movieId);
     }
 
     public LiveData<List<FavMovie>> getFavMovie() { return allFavMovies; }

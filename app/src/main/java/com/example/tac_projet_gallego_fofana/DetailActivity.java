@@ -18,15 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.tac_projet_gallego_fofana.api.API_Client;
 import com.example.tac_projet_gallego_fofana.api.API_Interface;
-import com.example.tac_projet_gallego_fofana.api.Movie;
-import com.example.tac_projet_gallego_fofana.api.MovieCatalog;
+import com.example.tac_projet_gallego_fofana.api.Genre;
 import com.example.tac_projet_gallego_fofana.api.MovieDetails;
-import com.example.tac_projet_gallego_fofana.data.entity.FavMovie;
-import com.example.tac_projet_gallego_fofana.recycler.CustomAdapterMovie;
 
-import org.json.JSONObject;
-
-import java.io.Serializable;
 import java.util.stream.Collectors;
 
 import retrofit2.Call;
@@ -55,21 +49,28 @@ public class DetailActivity extends AppCompatActivity {
         TextView itemDetailMovieStatus = findViewById(R.id.itemDetailMovieStatus);
 
         Intent intent = getIntent();
-        Movie currentMovie = (Movie) intent.getSerializableExtra("MOVIE");
+        int currentMovieId = intent.getIntExtra("MOVIE_ID", 808);
 
+        // GET THE MOVIE DETAIL
         API_Interface apiService = API_Client.getClient().create(API_Interface.class);
-        Call<MovieDetails> callMovieDetails = apiService.getDetails(currentMovie.getId());
+        Call<MovieDetails> callMovieDetails = apiService.getDetails(currentMovieId);
         callMovieDetails.enqueue(new Callback<MovieDetails>() {
             @Override
             public void onResponse(Call<MovieDetails> call, Response<MovieDetails> response) {
-                Log.d("MATDAV","on response : callMovieDetails");
+                // UPDATE THE DETAIL CARD
+                itemDetailMovieTitle.setText(response.body().getTitle());
                 itemDetailMovieTagLine.setText(response.body().getTagline());
-                itemDetailMovieRuntime.setText(String.valueOf(getTimeString(response.body().getRuntime())));
+                itemDetailMovieVote.setText("Note : " + String.valueOf(response.body().getVoteAverage()));
+                itemDetailMovieOverview.setText("OVERVIEW : " + response.body().getOverview());
+                itemMovieGenres.setText("GENRES : " + String.join(" | ", response.body().getGenres().stream().map(genre -> ((Genre) genre).getName()).collect(Collectors.toList())));
+                itemDetailMovieLanguage.setText(response.body().getOriginalLanguage());
+                itemDetailMovieReleaseDate.setText(response.body().getReleaseDate());
+                itemDetailMovieRuntime.setText(getTimeString(response.body().getRuntime()));
                 itemDetailMovieStatus.setText(response.body().getStatus());
             }
             @Override
             public void onFailure(Call<MovieDetails> call, Throwable t) {
-                Log.d("MATDAV","on failure");
+                Log.d("MATDAV","on failure : callMovieDetails");
             }
 
             public String getTimeString(int min) {
@@ -77,21 +78,13 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        // SET ALL THE MOVIE INFOS INSIDE THE DETAIL CARD
+        // SET THE IMAGES
         favButton.setImageResource(intent.getIntExtra("IS_FAVORITED", R.drawable.star_empty));
-        itemDetailMovieTitle.setText(currentMovie.getTitle());
-        itemDetailMovieTagLine.setText("TAG_LINE");
         Glide.with(this)
-                .load("https://image.tmdb.org/t/p/w500" + currentMovie.getPosterPath())
+                .load("https://image.tmdb.org/t/p/w500" + intent.getStringExtra("MOVIE_POSTER_PATH"))
                 .into(itemDetailMoviePoster);
-        itemDetailMovieVote.setText("Note : " + String.valueOf(currentMovie.getVoteAverage()));
-        itemDetailMovieOverview.setText("OVERVIEW : " + currentMovie.getOverview());
-        itemMovieGenres.setText("GENRES : " + intent.getStringExtra("MOVIE_GENRES"));
-        itemDetailMovieLanguage.setText(currentMovie.getOriginalLanguage());
-        itemDetailMovieReleaseDate.setText(currentMovie.getReleaseDate());
-        itemDetailMovieRuntime.setText("MOVIE_RUNTIME");
         Glide.with(this)
-                .load("https://image.tmdb.org/t/p/w500" + currentMovie.getBackdropPath())
+                .load("https://image.tmdb.org/t/p/w500" + intent.getStringExtra("MOVIE_BACKDROP_PATH"))
                 .into(itemDetailMovieBackdrop);
         itemDetailMovieStatus.setText("MOVIE_STATUS");
 

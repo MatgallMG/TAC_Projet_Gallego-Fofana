@@ -71,7 +71,7 @@ public class MovieDetails {
     private Integer budget;
     @SerializedName("genres")
     @Expose
-    private List<GenreDetail> genres = null;
+    private List<Genre> genres = null;
     @SerializedName("homepage")
     @Expose
     private String homepage;
@@ -165,11 +165,11 @@ public class MovieDetails {
         this.budget = budget;
     }
 
-    public List<GenreDetail> getGenres() {
+    public List<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<GenreDetail> genres) {
+    public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
 
@@ -334,34 +334,7 @@ public class MovieDetails {
     }
 
 }
-//-----------------------------------com.example.Genre.java-----------------------------------
 
-class GenreDetail {
-
-    @SerializedName("id")
-    @Expose
-    private Integer id;
-    @SerializedName("name")
-    @Expose
-    private String name;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-}
 //-----------------------------------com.example.ProductionCompany.java-----------------------------------
 
 class ProductionCompany {
