@@ -91,6 +91,8 @@ public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.
 
         if (holder.isAlreadyFavorite(currentMovie)) {
             holder.imageButtonFav.setImageResource(R.drawable.star_filled);
+        } else {
+            holder.imageButtonFav.setImageResource(R.drawable.star_empty);
         }
     }
 
