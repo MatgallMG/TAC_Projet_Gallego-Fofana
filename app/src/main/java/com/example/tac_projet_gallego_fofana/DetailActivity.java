@@ -2,8 +2,12 @@ package com.example.tac_projet_gallego_fofana;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,7 +16,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.tac_projet_gallego_fofana.api.Movie;
+import com.example.tac_projet_gallego_fofana.data.entity.FavMovie;
 
+import java.io.Serializable;
 import java.util.stream.Collectors;
 
 public class DetailActivity extends AppCompatActivity {
@@ -23,6 +30,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.item_layout_detail);
         Toast.makeText(this, "on create detail", Toast.LENGTH_SHORT).show();
 
+        ImageButton favButton = findViewById(R.id.favButton);
         TextView itemDetailMovieTitle = findViewById(R.id.itemDetailMovieTitle);
         TextView itemDetailMovieTagLine = findViewById(R.id.itemDetailMovieTagLine);
         ImageView itemDetailMoviePoster = findViewById(R.id.itemDetailMoviePoster);
@@ -36,23 +44,36 @@ public class DetailActivity extends AppCompatActivity {
         TextView itemDetailMovieStatus = findViewById(R.id.itemDetailMovieStatus);
 
         Intent intent = getIntent();
-        itemDetailMovieTitle.setText(intent.getStringExtra("MOVIE_TITLE"));
-        itemDetailMovieTagLine.setText("MOVIE_TAGLINE");
+        Movie currentMovie = (Movie) intent.getSerializableExtra("MOVIE");
+
+        // SET ALL THE MOVIE INFOS INSIDE THE DETAIL CARD
+        favButton.setImageResource(intent.getIntExtra("IS_FAVORITED", R.drawable.star_empty));
+        itemDetailMovieTitle.setText(currentMovie.getTitle());
+        itemDetailMovieTagLine.setText("TAG_LINE");
         Glide.with(this)
-                .load("https://image.tmdb.org/t/p/w500"+ intent.getStringExtra("MOVIE_POSTER"))
+                .load("https://image.tmdb.org/t/p/w500" + currentMovie.getPosterPath())
                 .into(itemDetailMoviePoster);
-        itemDetailMovieVote.setText("Note : "+String.valueOf(intent.getDoubleExtra("MOVIE_VOTE", (double) 0)));
-        itemDetailMovieOverview.setText("OVERVIEW : "+intent.getStringExtra("MOVIE_OVERVIEW"));
-        itemMovieGenres.setText("GENRES : "+intent.getStringExtra("MOVIE_GENRES"));
-        itemDetailMovieLanguage.setText(intent.getStringExtra("MOVIE_LANGUAGE"));
-        itemDetailMovieReleaseDate.setText(intent.getStringExtra("MOVIE_RELEASE_DATE"));
+        itemDetailMovieVote.setText("Note : " + String.valueOf(currentMovie.getVoteAverage()));
+        itemDetailMovieOverview.setText("OVERVIEW : " + currentMovie.getOverview());
+        itemMovieGenres.setText("GENRES : " + intent.getStringExtra("MOVIE_GENRES"));
+        itemDetailMovieLanguage.setText(currentMovie.getOriginalLanguage());
+        itemDetailMovieReleaseDate.setText(currentMovie.getReleaseDate());
         itemDetailMovieRuntime.setText("MOVIE_RUNTIME");
         Glide.with(this)
-                .load("https://image.tmdb.org/t/p/w500"+ intent.getStringExtra("MOVIE_BACKDROP"))
+                .load("https://image.tmdb.org/t/p/w500" + currentMovie.getBackdropPath())
                 .into(itemDetailMovieBackdrop);
         itemDetailMovieStatus.setText("MOVIE_STATUS");
 
+        // INFORM THE USER THAT THEY CAN'T INTERACT WITH THE STAR
+        favButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Animation shake = AnimationUtils.loadAnimation(view.getContext(), R.anim.shake);
+                favButton.startAnimation(shake);
+            }
+        });
     }
+
 
     public void navMainLayout(View view) {
         //Goto mainLayout

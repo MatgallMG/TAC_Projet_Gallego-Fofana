@@ -2,6 +2,7 @@ package com.example.tac_projet_gallego_fofana.recycler;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,7 +90,7 @@ public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.
         holder.movieDate.setText(currentMovie.getReleaseDate());
         holder.movieGenres.setText(curtail(genres));
 
-        if (holder.isAlreadyFavorite(currentMovie)) {
+        if (mainActivityViewModel.isAlreadyFavorite(currentMovie)) {
             holder.imageButtonFav.setImageResource(R.drawable.star_filled);
         } else {
             holder.imageButtonFav.setImageResource(R.drawable.star_empty);
@@ -158,18 +159,9 @@ public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.
                     Movie currentMovie = movie_list.get(getAdapterPosition());
 
                     Intent intent = new Intent(context, DetailActivity.class);
-                    intent.putExtra("MOVIE_TITLE", currentMovie.getTitle());
-                    intent.putExtra("MOVIE_POSTER", currentMovie.getPosterPath());
-                    //TagLine
-                    intent.putExtra("MOVIE_VOTE", currentMovie.getVoteAverage());
-                    intent.putExtra("MOVIE_OVERVIEW", currentMovie.getOverview());
-                    //Onlined genres
                     intent.putExtra("MOVIE_GENRES", String.join(" | ", currentMovie.getGenreIds().stream().map((genreId) -> genre_dictionary.get(genreId)).collect(Collectors.toList())));
-                    intent.putExtra("MOVIE_LANGUAGE", movie_list.get(getAdapterPosition()).getOriginalLanguage());
-                    intent.putExtra("MOVIE_RELEASE_DATE", movie_list.get(getAdapterPosition()).getReleaseDate());
-                    //Runtime
-                    intent.putExtra("MOVIE_BACKDROP", movie_list.get(getAdapterPosition()).getBackdropPath());
-                    //Status
+                    intent.putExtra("IS_FAVORITED", mainActivityViewModel.isAlreadyFavorite(currentMovie) ? R.drawable.star_filled : R.drawable.star_empty);
+                    intent.putExtra("MOVIE", currentMovie);
                     startForResult.launch(intent);
                 }
             });
@@ -181,7 +173,7 @@ public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.
 
                     Movie currentFavMovie = movie_list.get(getAdapterPosition());
 
-                    if (isAlreadyFavorite(currentFavMovie)) {
+                    if (mainActivityViewModel.isAlreadyFavorite(currentFavMovie)) {
                         removeFavMovieFromDB(currentFavMovie,getAdapterPosition());
                         imageButtonFav.setImageResource(R.drawable.star_empty);
                     } else {
@@ -190,10 +182,6 @@ public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.
                     }
                 }
             });
-        }
-
-        public Boolean isAlreadyFavorite(Movie m) {
-            return mainActivityViewModel.allFavMovies.getValue().stream().map(f -> f.getId()).collect(Collectors.toList()).contains(m.getId());
         }
 
         public void addFavMovieToDB(Movie m) {

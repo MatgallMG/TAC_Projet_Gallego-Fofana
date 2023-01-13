@@ -8,10 +8,12 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.tac_projet_gallego_fofana.api.Movie;
 import com.example.tac_projet_gallego_fofana.data.My_Repository;
 import com.example.tac_projet_gallego_fofana.data.entity.FavMovie;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -65,6 +67,10 @@ public class MainActivityViewModel extends AndroidViewModel {
                         Log.d(LOG, "complete");
                     }
                 });
+    }
+
+    public Boolean isAlreadyFavorite(Movie m) {
+        return allFavMovies.getValue().stream().map(f -> f.getId()).collect(Collectors.toList()).contains(m.getId());
     }
 
     public LiveData<List<FavMovie>> getFavMovie() { return allFavMovies; }

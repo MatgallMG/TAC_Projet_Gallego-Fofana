@@ -23,17 +23,41 @@
                 android:background="@color/dark"
                 android:padding="25dp">
 
+                <Button
+                    android:id="@+id/TopReturnButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@color/soft_red"
+                    android:onClick="navMainLayout"
+                    android:text="◄"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/favButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:alpha="0.5"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:src="@drawable/star_empty"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/itemDetailMovieTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="50dp"
                     android:gravity="center"
                     android:text="TextView"
                     android:textColor="@color/white"
                     android:textSize="20dp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/TopReturnButton"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -163,9 +187,11 @@
                     app:layout_constraintTop_toBottomOf="@+id/itemDetailMovieBackdrop" />
 
                 <Button
+                    android:id="@+id/BottomReturnButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
+                    android:layout_marginHorizontal="50dp"
                     android:background="@color/soft_red"
                     android:textColor="@color/white"
                     android:text="Retour"
