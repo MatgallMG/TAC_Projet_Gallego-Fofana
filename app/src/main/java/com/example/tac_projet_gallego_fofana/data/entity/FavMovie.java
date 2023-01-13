@@ -5,10 +5,11 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class FavMovie {
+public class FavMovie implements Serializable {
 
     @PrimaryKey(autoGenerate = false) private Integer id;
     @ColumnInfo(name = "adult") private Boolean adult;

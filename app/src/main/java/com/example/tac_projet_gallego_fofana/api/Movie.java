@@ -2,10 +2,29 @@ package com.example.tac_projet_gallego_fofana.api;
 
 import java.io.Serializable;
 import java.util.List;
+
+import com.example.tac_projet_gallego_fofana.data.entity.FavMovie;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Movie implements Serializable {
+
+    public Movie(FavMovie fm) {
+        this.id = fm.getId();
+        this.adult = fm.getAdult();
+        this.backdropPath = fm.getBackdropPath();
+        this.genreIds = fm.getGenreIds();
+        this.originalLanguage = fm.getOriginalLanguage();
+        this.originalTitle = fm.getOriginalTitle();
+        this.overview = fm.getOverview();
+        this.popularity = fm.getPopularity();
+        this.posterPath = fm.getPosterPath();
+        this.releaseDate = fm.getReleaseDate();
+        this.title = fm.getTitle();
+        this.video = fm.getVideo();
+        this.voteAverage = fm.getVoteAverage();
+        this.voteCount = fm.getVoteCount();
+    }
 
     @SerializedName("adult")
     @Expose
