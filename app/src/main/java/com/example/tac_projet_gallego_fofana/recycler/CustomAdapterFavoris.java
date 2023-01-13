@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tac_projet_gallego_fofana.DetailActivity;
@@ -27,23 +29,39 @@ import java.util.List;
 import java.util.Map;
 
 
-public class CustomAdapterFavoris extends RecyclerView.Adapter<CustomAdapterFavoris.MyViewHolder> {
+public class CustomAdapterFavoris extends ListAdapter<FavMovie, CustomAdapterFavoris.MyViewHolder> {
 
-    private List<FavMovie> favMovie_list;
+
+    private final Map<Integer, List<Integer>> movieGenres;
     private Context context;
     private MainActivityViewModel mainActivityViewModel;
     private Map<Integer, String> genre_dictionary;
     private ActivityResultLauncher<Intent> startForResult;
     public int item_layout_type;
 
-    public CustomAdapterFavoris(Context context, List<FavMovie> favMovie_list, MainActivityViewModel mainActivityViewModel, Map<Integer, String> genre_dictionary, ActivityResultLauncher<Intent> startForResult, int item_layout_type) {
+    public CustomAdapterFavoris(Context context, MainActivityViewModel mainActivityViewModel, Map<Integer, String> genre_dictionary, ActivityResultLauncher<Intent> startForResult, int item_layout_type, Map<Integer, List<Integer>> movieGenres) {
+        super(DIFF_CALLBACK);
         this.context = context;
-        this.favMovie_list = favMovie_list;
         this.mainActivityViewModel = mainActivityViewModel;
         this.genre_dictionary = genre_dictionary;
         this.startForResult = startForResult;
         this.item_layout_type = item_layout_type;
+        this.movieGenres = movieGenres;
     }
+
+    private static final DiffUtil.ItemCallback<FavMovie> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<FavMovie>() {
+                @Override
+                public boolean areItemsTheSame(@NonNull FavMovie oldFavMovies, @NonNull FavMovie newFavMovies) {
+                    return oldFavMovies.equals(newFavMovies);
+                }
+
+                @Override
+                public boolean areContentsTheSame(@NonNull FavMovie oldFavMovies, @NonNull FavMovie newFavMovies) {
+                    return oldFavMovies.getId().equals(newFavMovies.getId());
+                }
+            };
+
 
     public void setItemLayoutType(int item_layout_type) {
         this.item_layout_type = item_layout_type;
@@ -53,10 +71,10 @@ public class CustomAdapterFavoris extends RecyclerView.Adapter<CustomAdapterFavo
         return this.item_layout_type;
     }
 
-    public void setMovieList(List<FavMovie> favMovie_list) {
-        this.favMovie_list = favMovie_list;
-        notifyDataSetChanged();
+    public void setGenres(FavMovie favMovie) {
+        favMovie.setGenreIds(movieGenres.get(favMovie.getId()));
     }
+
 
     @NonNull
     @Override
@@ -65,27 +83,27 @@ public class CustomAdapterFavoris extends RecyclerView.Adapter<CustomAdapterFavo
         return new MyViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull CustomAdapterFavoris.MyViewHolder holder, int position) {
 
-        FavMovie currentFavMovie = favMovie_list.get(position);
-
+        FavMovie favMovie = getItem(position);
+        setGenres(favMovie);
         List<String> genres = new ArrayList<>();
+        if(favMovie != null) {
+            for (Integer genreId : favMovie.getGenreIds()){
+                genres.add(genre_dictionary.get(genreId));
+            }
+            Glide.with(context)
+                    .load("https://image.tmdb.org/t/p/w500" + favMovie.getPosterPath())
+                    .into(holder.moviePoster);
 
-        for (Integer genreId : currentFavMovie.getGenreIds()) {
-            genres.add(genre_dictionary.get(genreId));
+            holder.movieTitle.setText(curtail(favMovie.getTitle()));
+            holder.movieNote.setText(favMovie.getVoteAverage().toString());
+            holder.movieDate.setText(favMovie.getReleaseDate());
+            holder.movieGenres.setText(curtail(genres));
+            holder.imageButtonFav.setImageResource(R.drawable.star_filled);
         }
-
-        Glide.with(context)
-                .load("https://image.tmdb.org/t/p/w500"+ currentFavMovie.getPosterPath())
-                .into(holder.moviePoster);
-
-        holder.movieTitle.setText(curtail(currentFavMovie.getTitle()));
-        holder.movieNote.setText(currentFavMovie.getVoteAverage().toString());
-        holder.movieDate.setText(currentFavMovie.getReleaseDate());
-        holder.movieGenres.setText(curtail(genres));
-        holder.imageButtonFav.setImageResource(R.drawable.star_filled);
-
     }
 
     private String curtail(String title) {
@@ -115,14 +133,6 @@ public class CustomAdapterFavoris extends RecyclerView.Adapter<CustomAdapterFavo
         return res;
     }
 
-    @Override
-    public int getItemCount() {
-        if (favMovie_list != null) {
-            return favMovie_list.size();
-        }
-        return 0;
-    }
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         ConstraintLayout movieBox;
@@ -147,7 +157,7 @@ public class CustomAdapterFavoris extends RecyclerView.Adapter<CustomAdapterFavo
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, DetailActivity.class);
-                    FavMovie currentMovie = favMovie_list.get(getAdapterPosition());
+                    FavMovie currentMovie = getItem(getAdapterPosition());
                     intent.putExtra("MOVIE_ID", currentMovie.getId());
                     intent.putExtra("MOVIE_POSTER_PATH", currentMovie.getPosterPath());
                     intent.putExtra("MOVIE_BACKDROP_PATH", currentMovie.getBackdropPath());
@@ -160,14 +170,8 @@ public class CustomAdapterFavoris extends RecyclerView.Adapter<CustomAdapterFavo
                 @Override
                 public void onClick(View view) {
                     //Toast.makeText(view.getContext(), "item N°"+getAdapterPosition()+" Favorited !", Toast.LENGTH_SHORT).show();
-
-                    FavMovie currentFavMovie = favMovie_list.get(getAdapterPosition());
-
+                    FavMovie currentFavMovie = getItem(getAdapterPosition());
                     removeFavMovieFromDB(currentFavMovie);
-                    favMovie_list.remove(currentFavMovie);
-                    notifyItemRemoved(getAdapterPosition());
-                    notifyItemRangeChanged(getAdapterPosition(), favMovie_list.size());
-
                 }
             });
         }

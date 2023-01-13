@@ -11,7 +11,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -127,16 +126,16 @@ public class FavorisFragment extends Fragment {
         callPopMovies.enqueue(new Callback<MovieCatalog>() {
             @Override
             public void onResponse(Call<MovieCatalog> call, Response<MovieCatalog> response) {
-                //Log.d(TAG,"on response");
                 List<Movie> movie_list = response.body().getResults();
-                List<FavMovie> listeFavoris = mainActivityViewModel.getFavMovie().getValue();
+                Map<Integer, List<Integer>> movieGenres = getGenreMovie(movie_list);
                 //Log.d(TAG,"observe");
-                mainActivityViewModel.getAllFavMovies();
-                getListGenre(movie_list,listeFavoris);
-                customAdapter = new CustomAdapterFavoris(view.getContext(), listeFavoris, mainActivityViewModel, genre_dictionary,startForResult, R.layout.item_layout);
+                customAdapter = new CustomAdapterFavoris(view.getContext(), mainActivityViewModel, genre_dictionary,startForResult, R.layout.item_layout, movieGenres);
+                mainActivityViewModel.getFavMovie().observe(getViewLifecycleOwner(), favMovies -> {
+                    customAdapter.submitList(favMovies);
+                    displayListOfFavoris(favMovies);
+                }
+                );
                 recyclerView.setAdapter(customAdapter);
-                displayListOfFavoris(listeFavoris);
-
             }
             @Override
             public void onFailure(Call<MovieCatalog> call, Throwable t) {
@@ -175,14 +174,11 @@ public class FavorisFragment extends Fragment {
         Log.d(TAG, "réponse = \n" + stringBuilder);
     }
 
-    private void getListGenre(List<Movie> movieList, List<FavMovie> favMovieList){
-        for (FavMovie favM: favMovieList) {
-            for (int i = 0; i < movieList.size(); i++) {
-                if (Objects.equals(movieList.get(i).getId(), favM.getId())){
-                    favM.setGenreIds(movieList.get(i).getGenreIds());
-                    break;
-                }
-            }
+    private Map<Integer, List<Integer>> getGenreMovie(List<Movie> movieList){
+        Map<Integer, List<Integer>> movieGenre = new HashMap<>();
+        for (Movie movie: movieList) {
+            movieGenre.put(movie.getId(), movie.getGenreIds());
         }
+        return movieGenre;
     }
 }

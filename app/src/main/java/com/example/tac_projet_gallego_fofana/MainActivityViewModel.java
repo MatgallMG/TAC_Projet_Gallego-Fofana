@@ -77,9 +77,11 @@ public class MainActivityViewModel extends AndroidViewModel {
 
     public void addFavMovie(FavMovie favMovie) {
         repository.insert(favMovie);
+        allFavMovies.setValue(repository.getAllFavMovies().blockingFirst());
     }
 
     public void deleteFavMovie(Integer id) {
         repository.deleteById(id);
+        allFavMovies.setValue(repository.getAllFavMovies().blockingFirst());
     }
 }
