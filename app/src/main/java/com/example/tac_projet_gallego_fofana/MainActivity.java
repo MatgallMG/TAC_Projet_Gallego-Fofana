@@ -1,22 +1,21 @@
 package com.example.tac_projet_gallego_fofana;
 
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
-    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPagerAndTabs() {
         viewPager = findViewById(R.id.tab_viewpager);
-        tabLayout = findViewById(R.id.menulayout);
+        TabLayout tabLayout = findViewById(R.id.menu_layout);
 
         final MovieFragment fragmentMovie = MovieFragment.newInstance();
         final FavorisFragment fragmentFavM = FavorisFragment.newInstance();
@@ -57,35 +56,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
-            @Override
-            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                tab.setText(position == 0 ? MovieFragment.TAB_NAME : FavorisFragment.TAB_NAME);
-            }
-        });
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(position == 0 ? MovieFragment.TAB_NAME : FavorisFragment.TAB_NAME));
         tabLayoutMediator.attach();
 
         Button buttonChangeViewVertical = findViewById(R.id.changeViewButton1);
         Button buttonChangeViewGrid = findViewById(R.id.changeViewButton2);
 
-        buttonChangeViewVertical.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (viewPager.getCurrentItem() == 0)
-                    fragmentMovie.displayLinear();
-                else
-                    fragmentFavM.displayLinear();
-            }
+        buttonChangeViewVertical.setOnClickListener(view -> {
+            if (viewPager.getCurrentItem() == 0)
+                fragmentMovie.displayLinear();
+            else
+                fragmentFavM.displayLinear();
         });
 
-        buttonChangeViewGrid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (viewPager.getCurrentItem() == 0)
-                    fragmentMovie.displayGrid();
-                else
-                    fragmentFavM.displayGrid();
-            }
+        buttonChangeViewGrid.setOnClickListener(view -> {
+            if (viewPager.getCurrentItem() == 0)
+                fragmentMovie.displayGrid();
+            else
+                fragmentFavM.displayGrid();
         });
     }
 

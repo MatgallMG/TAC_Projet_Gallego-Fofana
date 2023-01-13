@@ -1,9 +1,10 @@
 package com.example.tac_projet_gallego_fofana.api;
 //-----------------------------------com.example.BelongsToCollection.java-----------------------------------
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 class BelongsToCollection {
 

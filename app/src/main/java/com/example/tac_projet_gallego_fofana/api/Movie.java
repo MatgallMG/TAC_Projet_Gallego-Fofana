@@ -1,10 +1,10 @@
 package com.example.tac_projet_gallego_fofana.api;
 
-import java.util.List;
-
 import com.example.tac_projet_gallego_fofana.data.entity.FavMovie;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class Movie {
 
@@ -27,46 +27,46 @@ public class Movie {
 
     @SerializedName("adult")
     @Expose
-    private Boolean adult;
+    private final Boolean adult;
     @SerializedName("backdrop_path")
     @Expose
-    private String backdropPath;
+    private final String backdropPath;
     @SerializedName("genre_ids")
     @Expose
-    private List<Integer> genreIds = null;
+    private final List<Integer> genreIds;
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private final Integer id;
     @SerializedName("original_language")
     @Expose
-    private String originalLanguage;
+    private final String originalLanguage;
     @SerializedName("original_title")
     @Expose
-    private String originalTitle;
+    private final String originalTitle;
     @SerializedName("overview")
     @Expose
-    private String overview;
+    private final String overview;
     @SerializedName("popularity")
     @Expose
-    private Double popularity;
+    private final Double popularity;
     @SerializedName("poster_path")
     @Expose
-    private String posterPath;
+    private final String posterPath;
     @SerializedName("release_date")
     @Expose
-    private String releaseDate;
+    private final String releaseDate;
     @SerializedName("title")
     @Expose
-    private String title;
+    private final String title;
     @SerializedName("video")
     @Expose
-    private Boolean video;
+    private final Boolean video;
     @SerializedName("vote_average")
     @Expose
-    private Double voteAverage;
+    private final Double voteAverage;
     @SerializedName("vote_count")
     @Expose
-    private Integer voteCount;
+    private final Integer voteCount;
 
     public Boolean getAdult() {
         return adult;

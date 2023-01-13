@@ -22,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></ImageView>
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/poster" />
 
 
         <TextView
@@ -30,9 +31,9 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="TextView"
+            android:text="@string/textview"
             android:textColor="@color/white"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -44,9 +45,9 @@
             android:id="@+id/itemMovieNote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
+            android:text="@string/textview"
             android:textColor="@color/yellow"
-            android:textSize="20dp"
+            android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/itemMovieReleaseDate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +57,7 @@
             android:id="@+id/itemMovieReleaseDate"
             android:layout_width="64dp"
             android:layout_height="20dp"
-            android:text="TextView"
+            android:text="@string/textview"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -73,14 +74,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/itemMovieReleaseDate"
-            app:layout_constraintTop_toBottomOf="@+id/itemMovieNote" />
+            app:layout_constraintTop_toBottomOf="@+id/itemMovieNote"
+            android:contentDescription="@string/favButtonDesc" />
 
         <TextView
             android:id="@+id/itemMovieGenres"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="TextView"
+            android:text="@string/textview"
             android:textColor="@color/light_grey"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"

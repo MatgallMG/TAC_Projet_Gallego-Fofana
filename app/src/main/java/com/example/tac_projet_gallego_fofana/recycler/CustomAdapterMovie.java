@@ -1,5 +1,6 @@
 package com.example.tac_projet_gallego_fofana.recycler;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -15,11 +16,10 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.tac_projet_gallego_fofana.DetailActivity;
 import com.example.tac_projet_gallego_fofana.MainActivityViewModel;
 import com.example.tac_projet_gallego_fofana.R;
-
-import com.bumptech.glide.Glide;
 import com.example.tac_projet_gallego_fofana.api.Movie;
 import com.example.tac_projet_gallego_fofana.data.entity.FavMovie;
 
@@ -30,12 +30,12 @@ import java.util.Map;
 
 public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.MyViewHolder> {
 
-    private String TAG = "MATDAV";
-    private List<Movie> movie_list;
-    private Context context;
-    private MainActivityViewModel mainActivityViewModel;
-    private Map<Integer, String> genre_dictionary;
-    private ActivityResultLauncher<Intent> startForResult;
+    private final String TAG = "MATDAV";
+    private final List<Movie> movie_list;
+    private final Context context;
+    private final MainActivityViewModel mainActivityViewModel;
+    private final Map<Integer, String> genre_dictionary;
+    private final ActivityResultLauncher<Intent> startForResult;
     private int item_layout_type;
 
     public CustomAdapterMovie(Context context, List<Movie> movie_list, MainActivityViewModel mainActivityViewModel, Map<Integer, String> genre_dictionary, ActivityResultLauncher<Intent> startForResult, int item_layout_type) {
@@ -55,11 +55,6 @@ public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.
         return this.item_layout_type;
     }
 
-    public void setMovieList(List<Movie> movie_list) {
-        this.movie_list = movie_list;
-        notifyDataSetChanged();
-    }
-
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -67,6 +62,7 @@ public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.
         return new MyViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
@@ -110,15 +106,15 @@ public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.
         // GRID : genres are set to visibility:invisible in xml layout anyways
         if (item_layout_type == R.layout.item_layout_grid) return "";
         // LINEAR
-        String res = "";
+        StringBuilder res = new StringBuilder();
         int i = 0;
         while (i != genres.size()) {
-            res += genres.get(i);
+            res.append(genres.get(i));
             i++;
             if (res.length() >= 40) return res+"...";
-            res += " | ";
+            res.append(" | ");
         }
-        return res;
+        return res.toString();
     }
 
     @Override
@@ -149,33 +145,27 @@ public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.
             movieDate = (TextView) itemView.findViewById(R.id.itemMovieReleaseDate);
             imageButtonFav = (ImageButton) itemView.findViewById(R.id.favButton);
 
-            movieBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(context, DetailActivity.class);
-                    Movie currentMovie = movie_list.get(getAdapterPosition());
-                    intent.putExtra("MOVIE_ID", currentMovie.getId());
-                    intent.putExtra("MOVIE_POSTER_PATH", currentMovie.getPosterPath());
-                    intent.putExtra("MOVIE_BACKDROP_PATH", currentMovie.getBackdropPath());
-                    intent.putExtra("IS_FAVORITED", mainActivityViewModel.isAlreadyFavorite(currentMovie.getId()) ? R.drawable.star_filled : R.drawable.star_empty);
-                    startForResult.launch(intent);
-                }
+            movieBox.setOnClickListener(view -> {
+                Intent intent = new Intent(context, DetailActivity.class);
+                Movie currentMovie = movie_list.get(getAdapterPosition());
+                intent.putExtra("MOVIE_ID", currentMovie.getId());
+                intent.putExtra("MOVIE_POSTER_PATH", currentMovie.getPosterPath());
+                intent.putExtra("MOVIE_BACKDROP_PATH", currentMovie.getBackdropPath());
+                intent.putExtra("IS_FAVORITED", mainActivityViewModel.isAlreadyFavorite(currentMovie.getId()) ? R.drawable.star_filled : R.drawable.star_empty);
+                startForResult.launch(intent);
             });
 
-            imageButtonFav.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //Toast.makeText(view.getContext(), "item N°"+getAdapterPosition()+" Favorited !", Toast.LENGTH_SHORT).show();
+            imageButtonFav.setOnClickListener(view -> {
+                //Toast.makeText(view.getContext(), "item N°"+getAdapterPosition()+" Favorited !", Toast.LENGTH_SHORT).show();
 
-                    Movie currentFavMovie = movie_list.get(getAdapterPosition());
+                Movie currentFavMovie = movie_list.get(getAdapterPosition());
 
-                    if (mainActivityViewModel.isAlreadyFavorite(currentFavMovie.getId())) {
-                        removeFavMovieFromDB(currentFavMovie,getAdapterPosition());
-                        imageButtonFav.setImageResource(R.drawable.star_empty);
-                    } else {
-                        addFavMovieToDB(currentFavMovie);
-                        imageButtonFav.setImageResource(R.drawable.star_filled);
-                    }
+                if (mainActivityViewModel.isAlreadyFavorite(currentFavMovie.getId())) {
+                    removeFavMovieFromDB(currentFavMovie);
+                    imageButtonFav.setImageResource(R.drawable.star_empty);
+                } else {
+                    addFavMovieToDB(currentFavMovie);
+                    imageButtonFav.setImageResource(R.drawable.star_filled);
                 }
             });
         }
@@ -199,7 +189,7 @@ public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.
             mainActivityViewModel.addFavMovie(newFav);
         }
 
-        public void removeFavMovieFromDB(Movie m,int pos) {
+        public void removeFavMovieFromDB(Movie m) {
             Toast.makeText(context, "Retrait des favoris : "+m.getTitle(), Toast.LENGTH_SHORT).show();
             mainActivityViewModel.deleteFavMovie(m.getId());
         }

@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">TAC_Projet_Gallego_Fofana</string>
+    <string name="poster">Poster du film</string>
+    <string name="textview">TextView</string>
+    <string name="favButtonDesc">Bouton d\'ajout/supression des favoris</string>
+    <string name="grilleTxt">Vue en Grille</string>
+    <string name="verticaleTxt">Vue Verticale</string>
+    <string name="return_btn">returnBtn</string>
+    <string name="backdrop">backDrop</string>
+    <string name="retour">Retour</string>
 </resources>

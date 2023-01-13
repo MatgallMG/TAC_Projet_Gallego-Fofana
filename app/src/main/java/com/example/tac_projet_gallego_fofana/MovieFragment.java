@@ -3,6 +3,10 @@ package com.example.tac_projet_gallego_fofana;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -14,11 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.tac_projet_gallego_fofana.api.API_Client;
 import com.example.tac_projet_gallego_fofana.api.API_Interface;
@@ -46,22 +45,19 @@ public class MovieFragment extends Fragment {
 
     public static final String TAB_NAME = "Movies";
 
-    private String TAG = "MATDAV";
+    private final String TAG = "MATDAV";
     protected RecyclerView recyclerView;
     private GridLayoutManager layoutManager;
     private CustomAdapterMovie customAdapter;
-    private Map<Integer, String> genre_dictionary = new HashMap<>();
+    private final Map<Integer, String> genre_dictionary = new HashMap<>();
     private MainActivityViewModel mainActivityViewModel;
     private List<Movie> movie_list;
 
     ActivityResultLauncher<Intent> startForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        // your operation....
-                    }
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    // your operation....
                 }
             });
 
@@ -72,13 +68,12 @@ public class MovieFragment extends Fragment {
      * @return A new instance of fragment MovieFragment.
      */
     public static MovieFragment newInstance() {
-        MovieFragment fragment = new MovieFragment();
         /*
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         fragment.setArguments(args);
         */
-        return fragment;
+        return new MovieFragment();
     }
 
     public MovieFragment() {
@@ -106,8 +101,9 @@ public class MovieFragment extends Fragment {
         Call<GenreCatalog> callAllGenres = apiService.getAllGenres();
         callAllGenres.enqueue(new Callback<GenreCatalog>() {
             @Override
-            public void onResponse(Call<GenreCatalog> call, Response<GenreCatalog> response) {
+            public void onResponse(@NonNull Call<GenreCatalog> call, @NonNull Response<GenreCatalog> response) {
                 Log.d(TAG, "on response : genres");
+                assert response.body() != null;
                 List<Genre> genre_list = response.body().getGenres();
                 for (Genre genre : genre_list) {
                     Log.d(TAG, "in loop : genres " + genre.getId() + " : " + genre.getName());
@@ -117,7 +113,7 @@ public class MovieFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<GenreCatalog> call, Throwable t) {
+            public void onFailure(@NonNull Call<GenreCatalog> call, @NonNull Throwable t) {
                 Log.d(TAG, "on failure");
             }
         });
@@ -125,8 +121,9 @@ public class MovieFragment extends Fragment {
         Call<MovieCatalog> callPopMovies = apiService.getPopularMovies();
         callPopMovies.enqueue(new Callback<MovieCatalog>() {
             @Override
-            public void onResponse(Call<MovieCatalog> call, Response<MovieCatalog> response) {
+            public void onResponse(@NonNull Call<MovieCatalog> call, @NonNull Response<MovieCatalog> response) {
                 Log.d(TAG,"on response");
+                assert response.body() != null;
                 movie_list = response.body().getResults();
                 customAdapter = new CustomAdapterMovie(view.getContext(), movie_list, mainActivityViewModel, genre_dictionary, startForResult, R.layout.item_layout);
                 recyclerView.setAdapter(customAdapter);
@@ -134,7 +131,7 @@ public class MovieFragment extends Fragment {
 
             }
             @Override
-            public void onFailure(Call<MovieCatalog> call, Throwable t) {
+            public void onFailure(@NonNull Call<MovieCatalog> call, @NonNull Throwable t) {
                 Log.d(TAG,"on failure");
             }
         });
@@ -157,7 +154,7 @@ public class MovieFragment extends Fragment {
     private void displayListOfMovies(List<Movie> movies){
         StringBuilder stringBuilder = new StringBuilder();
         for (Movie movie : movies){
-            stringBuilder.append("-"+movie.getTitle()+"\n");
+            stringBuilder.append("-").append(movie.getTitle()).append("\n");
         }
         Log.d(TAG, "réponse = \n" + stringBuilder);
     }
@@ -165,7 +162,7 @@ public class MovieFragment extends Fragment {
     private void displayListOfGenres(List<Genre> genres){
         StringBuilder stringBuilder = new StringBuilder();
         for (Genre genre : genres){
-            stringBuilder.append("-"+genre.getId()+" : "+genre.getName()+"\n");
+            stringBuilder.append("-").append(genre.getId()).append(" : ").append(genre.getName()).append("\n");
         }
         Log.d(TAG, "réponse = \n" + stringBuilder);
     }

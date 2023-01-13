@@ -8,11 +8,11 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.tac_projet_gallego_fofana.api.Movie;
 import com.example.tac_projet_gallego_fofana.data.My_Repository;
 import com.example.tac_projet_gallego_fofana.data.entity.FavMovie;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import io.reactivex.Observable;
@@ -30,7 +30,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
 
-        allFavMovies = new MutableLiveData<List<FavMovie>>();
+        allFavMovies = new MutableLiveData<>();
 
         createRepository(application);
         getAllFavMovies();
@@ -70,7 +70,7 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public Boolean isAlreadyFavorite(int movieId) {
-        return allFavMovies.getValue().stream().map(f -> f.getId()).collect(Collectors.toList()).contains(movieId);
+        return Objects.requireNonNull(allFavMovies.getValue()).stream().map(FavMovie::getId).collect(Collectors.toList()).contains(movieId);
     }
 
     public LiveData<List<FavMovie>> getFavMovie() { return allFavMovies; }

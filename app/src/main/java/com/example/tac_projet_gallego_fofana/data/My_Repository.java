@@ -12,26 +12,20 @@ import io.reactivex.Observable;
 
 public class My_Repository {
 
-    private My_Database db;
-
-    private FavMovieDao favMovieDao;
+    private final FavMovieDao favMovieDao;
 
     public My_Repository(Application application) {
-        db = My_Database.getDataBase(application);
+        My_Database db = My_Database.getDataBase(application);
 
         favMovieDao = db.favMovieDao();
     }
 
     public void insert(FavMovie favMovie) {
-        My_Database.databaseWriteExecutor.execute(() -> {
-            favMovieDao.insert(favMovie);
-        });
+        My_Database.databaseWriteExecutor.execute(() -> favMovieDao.insert(favMovie));
     }
 
     public void deleteById(Integer id) {
-        My_Database.databaseWriteExecutor.execute(() -> {
-            favMovieDao.deleteById(id);
-        });
+        My_Database.databaseWriteExecutor.execute(() -> favMovieDao.deleteById(id));
     }
 
     public Observable<List<FavMovie>> getAllFavMovies() {
