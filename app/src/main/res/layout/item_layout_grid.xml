@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:http="http://schemas.android.com/tools"
-    android:layout_height="200dp"
+    android:layout_height="400dp"
     android:layout_width="match_parent"
     android:id="@+id/cardItem"
     android:layout_margin="10dp"
@@ -19,15 +19,15 @@
 
         <ImageView
             android:id="@+id/itemMovieImage"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"></ImageView>
 
+
         <TextView
             android:id="@+id/itemMovieTitle"
-            android:layout_width="200dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="TextView"
@@ -36,22 +36,9 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/itemMovieImage"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.213" />
-
-        <TextView
-            android:id="@+id/itemMovieGenres"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="TextView"
-            android:textColor="@color/light_grey"
-            app:layout_constraintBottom_toTopOf="@+id/itemMovieNote"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/itemMovieImage"
-            app:layout_constraintTop_toBottomOf="@+id/itemMovieTitle" />
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemMovieImage"
+            app:layout_constraintVertical_bias="0.042" />
 
         <TextView
             android:id="@+id/itemMovieNote"
@@ -60,9 +47,9 @@
             android:text="TextView"
             android:textColor="@color/yellow"
             android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/itemMovieReleaseDate"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/itemMovieImage"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/itemMovieTitle" />
 
         <TextView
@@ -73,20 +60,31 @@
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/itemMovieImage"
-            app:layout_constraintTop_toBottomOf="@+id/itemMovieNote" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/itemMovieNote"/>
 
         <ImageButton
             android:id="@+id/favButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
             android:background="@null"
             android:gravity="center"
             android:src="@drawable/star_empty"
-            app:layout_constraintBottom_toTopOf="@+id/itemMovieTitle"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/itemMovieReleaseDate"
+            app:layout_constraintTop_toBottomOf="@+id/itemMovieNote" />
+
+        <TextView
+            android:id="@+id/itemMovieGenres"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="TextView"
+            android:textColor="@color/light_grey"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

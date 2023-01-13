@@ -84,14 +84,41 @@ public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.
                 .load("https://image.tmdb.org/t/p/w500"+ currentMovie.getPosterPath())
                 .into(holder.moviePoster);
 
-        holder.movieTitle.setText(currentMovie.getTitle());
+        holder.movieTitle.setText(curtail(currentMovie.getTitle()));
         holder.movieNote.setText(currentMovie.getVoteAverage().toString());
         holder.movieDate.setText(currentMovie.getReleaseDate());
-        holder.movieGenres.setText(String.join(" | ", genres));
+        holder.movieGenres.setText(curtail(genres));
 
         if (holder.isAlreadyFavorite(currentMovie)) {
             holder.imageButtonFav.setImageResource(R.drawable.star_filled);
         }
+    }
+
+    private String curtail(String title) {
+        if (item_layout_type == R.layout.item_layout) {
+            // LINEAR
+            if (title.length() < 35) return title;
+            return title.substring(0, 35).trim() + "...";
+        } else {
+            // GRID
+            if (title.length() < 25) return title;
+            return title.substring(0, 25).trim() + "...";
+        }
+    }
+
+    private String curtail(List<String> genres) {
+        // GRID : genres are set to visibility:invisible in xml layout anyways
+        if (item_layout_type == R.layout.item_layout_grid) return "";
+        // LINEAR
+        String res = "";
+        int i = 0;
+        while (i != genres.size()) {
+            res += genres.get(i);
+            i++;
+            if (res.length() >= 40) return res+"...";
+            res += " | ";
+        }
+        return res;
     }
 
     @Override
