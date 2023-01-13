@@ -16,11 +16,22 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.tac_projet_gallego_fofana.api.API_Client;
+import com.example.tac_projet_gallego_fofana.api.API_Interface;
 import com.example.tac_projet_gallego_fofana.api.Movie;
+import com.example.tac_projet_gallego_fofana.api.MovieCatalog;
+import com.example.tac_projet_gallego_fofana.api.MovieDetails;
 import com.example.tac_projet_gallego_fofana.data.entity.FavMovie;
+import com.example.tac_projet_gallego_fofana.recycler.CustomAdapterMovie;
+
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.stream.Collectors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -45,6 +56,26 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Movie currentMovie = (Movie) intent.getSerializableExtra("MOVIE");
+
+        API_Interface apiService = API_Client.getClient().create(API_Interface.class);
+        Call<MovieDetails> callMovieDetails = apiService.getDetails(currentMovie.getId());
+        callMovieDetails.enqueue(new Callback<MovieDetails>() {
+            @Override
+            public void onResponse(Call<MovieDetails> call, Response<MovieDetails> response) {
+                Log.d("MATDAV","on response : callMovieDetails");
+                itemDetailMovieTagLine.setText(response.body().getTagline());
+                itemDetailMovieRuntime.setText(String.valueOf(getTimeString(response.body().getRuntime())));
+                itemDetailMovieStatus.setText(response.body().getStatus());
+            }
+            @Override
+            public void onFailure(Call<MovieDetails> call, Throwable t) {
+                Log.d("MATDAV","on failure");
+            }
+
+            public String getTimeString(int min) {
+                return (min/60)+"h"+(min%60);
+            }
+        });
 
         // SET ALL THE MOVIE INFOS INSIDE THE DETAIL CARD
         favButton.setImageResource(intent.getIntExtra("IS_FAVORITED", R.drawable.star_empty));
