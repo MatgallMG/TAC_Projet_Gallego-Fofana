@@ -62,7 +62,7 @@ public class CustomAdapterFavoris extends RecyclerView.Adapter<CustomAdapterFavo
     @NonNull
     @Override
     public CustomAdapterFavoris.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(item_layout_type, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -81,12 +81,39 @@ public class CustomAdapterFavoris extends RecyclerView.Adapter<CustomAdapterFavo
                 .load("https://image.tmdb.org/t/p/w500"+ currentFavMovie.getPosterPath())
                 .into(holder.moviePoster);
 
-        holder.movieTitle.setText(currentFavMovie.getTitle());
+        holder.movieTitle.setText(curtail(currentFavMovie.getTitle()));
         holder.movieNote.setText(currentFavMovie.getVoteAverage().toString());
         holder.movieDate.setText(currentFavMovie.getReleaseDate());
-        holder.movieGenres.setText(String.join(" | ", genres));
+        holder.movieGenres.setText(curtail(genres));
         holder.imageButtonFav.setImageResource(R.drawable.star_filled);
 
+    }
+
+    private String curtail(String title) {
+        if (item_layout_type == R.layout.item_layout) {
+            // LINEAR
+            if (title.length() < 35) return title;
+            return title.substring(0, 35).trim() + "...";
+        } else {
+            // GRID
+            if (title.length() < 25) return title;
+            return title.substring(0, 25).trim() + "...";
+        }
+    }
+
+    private String curtail(List<String> genres) {
+        // GRID : genres are set to visibility:invisible in xml layout anyways
+        if (item_layout_type == R.layout.item_layout_grid) return "";
+        // LINEAR
+        String res = "";
+        int i = 0;
+        while (i != genres.size()) {
+            res += genres.get(i);
+            i++;
+            if (res.length() >= 40) return res+"...";
+            res += " | ";
+        }
+        return res;
     }
 
     @Override
