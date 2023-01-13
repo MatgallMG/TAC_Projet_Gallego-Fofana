@@ -154,10 +154,22 @@ public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.
             movieBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(view.getContext(), "item N°"+getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(view.getContext(), "item N°"+getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                    Movie currentMovie = movie_list.get(getAdapterPosition());
 
                     Intent intent = new Intent(context, DetailActivity.class);
-                    intent.putExtra("MOVIE_TITLE", movie_list.get(getAdapterPosition()).getTitle());
+                    intent.putExtra("MOVIE_TITLE", currentMovie.getTitle());
+                    intent.putExtra("MOVIE_POSTER", currentMovie.getPosterPath());
+                    //TagLine
+                    intent.putExtra("MOVIE_VOTE", currentMovie.getVoteAverage());
+                    intent.putExtra("MOVIE_OVERVIEW", currentMovie.getOverview());
+                    //Onlined genres
+                    intent.putExtra("MOVIE_GENRES", String.join(" | ", currentMovie.getGenreIds().stream().map((genreId) -> genre_dictionary.get(genreId)).collect(Collectors.toList())));
+                    intent.putExtra("MOVIE_LANGUAGE", movie_list.get(getAdapterPosition()).getOriginalLanguage());
+                    intent.putExtra("MOVIE_RELEASE_DATE", movie_list.get(getAdapterPosition()).getReleaseDate());
+                    //Runtime
+                    intent.putExtra("MOVIE_BACKDROP", movie_list.get(getAdapterPosition()).getBackdropPath());
+                    //Status
                     startForResult.launch(intent);
                 }
             });
