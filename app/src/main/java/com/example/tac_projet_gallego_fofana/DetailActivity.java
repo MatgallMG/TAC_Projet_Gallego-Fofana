@@ -35,7 +35,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_layout_detail);
-        Toast.makeText(this, "on create detail", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "on create detail", Toast.LENGTH_SHORT).show();
 
         ImageButton favButton = findViewById(R.id.favButton);
         TextView itemDetailMovieTitle = findViewById(R.id.itemDetailMovieTitle);

@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Toast.makeText(this, "on create main", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "on create main", Toast.LENGTH_SHORT).show();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(this, "on resume main", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "on resume main", Toast.LENGTH_SHORT).show();
     }
 
     private void setupViewPagerAndTabs() {

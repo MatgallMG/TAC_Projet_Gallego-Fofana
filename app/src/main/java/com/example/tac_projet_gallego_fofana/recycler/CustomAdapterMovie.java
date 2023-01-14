@@ -185,12 +185,12 @@ public class CustomAdapterMovie extends RecyclerView.Adapter<CustomAdapterMovie.
                     m.getVideo(),
                     m.getVoteAverage(),
                     m.getVoteCount());
-            Toast.makeText(context, "Ajout aux favoris : "+newFav.getTitle(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "Ajout aux favoris : "+newFav.getTitle(), Toast.LENGTH_SHORT).show();
             mainActivityViewModel.addFavMovie(newFav);
         }
 
         public void removeFavMovieFromDB(Movie m) {
-            Toast.makeText(context, "Retrait des favoris : "+m.getTitle(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "Retrait des favoris : "+m.getTitle(), Toast.LENGTH_SHORT).show();
             mainActivityViewModel.deleteFavMovie(m.getId());
         }
     }

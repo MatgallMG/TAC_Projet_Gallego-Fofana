@@ -170,7 +170,7 @@ public class CustomAdapterFavoris extends ListAdapter<FavMovie, CustomAdapterFav
         }
 
         public void removeFavMovieFromDB(FavMovie m) {
-            Toast.makeText(context, "Retrait des favoris : "+m.getTitle(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "Retrait des favoris : "+m.getTitle(), Toast.LENGTH_SHORT).show();
             mainActivityViewModel.deleteFavMovie(m.getId());
         }
     }
