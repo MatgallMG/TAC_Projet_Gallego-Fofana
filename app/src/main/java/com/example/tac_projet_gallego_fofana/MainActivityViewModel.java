@@ -33,16 +33,16 @@ public class MainActivityViewModel extends AndroidViewModel {
         allFavMovies = new MutableLiveData<>();
 
         createRepository(application);
-        getAllFavMovies();
+        initAllFavMovies();
     }
 
-    public void createRepository(Application application) {
+    private void createRepository(Application application) {
         repository = new My_Repository(application);
     }
 
-    public void getAllFavMovies() {
-        Observable<List<FavMovie>> persons = repository.getAllFavMovies();
-        Observer<List<FavMovie>> observer = persons.subscribeOn(Schedulers.io())
+    private void initAllFavMovies() {
+        Observable<List<FavMovie>> favMovies = repository.getAllFavMovies();
+        Observer<List<FavMovie>> observer = favMovies.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new Observer<List<FavMovie>>() {
 
@@ -52,9 +52,9 @@ public class MainActivityViewModel extends AndroidViewModel {
                     }
 
                     @Override
-                    public void onNext(List<FavMovie> personList) {
+                    public void onNext(List<FavMovie> favMovieList) {
                         Log.d(LOG, "next");
-                        allFavMovies.setValue(personList);
+                        allFavMovies.setValue(favMovieList);
                     }
 
                     @Override
@@ -73,7 +73,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         return Objects.requireNonNull(allFavMovies.getValue()).stream().map(FavMovie::getId).collect(Collectors.toList()).contains(movieId);
     }
 
-    public LiveData<List<FavMovie>> getFavMovie() { return allFavMovies; }
+    public LiveData<List<FavMovie>> getAllFavMovies() { return allFavMovies; }
 
     public void addFavMovie(FavMovie favMovie) {
         repository.insert(favMovie);

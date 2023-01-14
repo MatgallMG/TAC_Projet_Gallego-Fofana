@@ -119,7 +119,7 @@ public class MovieFragment extends Fragment {
                 assert response.body() != null;
                 movie_list = response.body().getResults();
                 customAdapter = new CustomAdapterMovie(view.getContext(), movie_list, mainActivityViewModel, genre_dictionary, startForResult, R.layout.item_layout);
-                mainActivityViewModel.getFavMovie().observe(getViewLifecycleOwner(), favMovieList -> {
+                mainActivityViewModel.getAllFavMovies().observe(getViewLifecycleOwner(), favMovieList -> {
                     customAdapter.notifyDataSetChanged();
                 });
                 recyclerView.setAdapter(customAdapter);

@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -121,7 +119,7 @@ public class FavorisFragment extends Fragment {
                 Map<Integer, List<Integer>> movieGenres = getGenreMovie(movie_list);
                 //Log.d(TAG,"observe");
                 customAdapter = new CustomAdapterFavoris(view.getContext(), mainActivityViewModel, genre_dictionary,startForResult, R.layout.item_layout, movieGenres);
-                mainActivityViewModel.getFavMovie().observe(getViewLifecycleOwner(), favMovies -> {
+                mainActivityViewModel.getAllFavMovies().observe(getViewLifecycleOwner(), favMovies -> {
                     customAdapter.submitList(favMovies);
                     displayListOfFavoris(favMovies);
                 }
