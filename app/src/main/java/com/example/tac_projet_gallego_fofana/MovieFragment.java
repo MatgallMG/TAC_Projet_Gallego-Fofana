@@ -68,11 +68,6 @@ public class MovieFragment extends Fragment {
      * @return A new instance of fragment MovieFragment.
      */
     public static MovieFragment newInstance() {
-        /*
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        fragment.setArguments(args);
-        */
         return new MovieFragment();
     }
 
@@ -92,10 +87,8 @@ public class MovieFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.recyclerView);
         layoutManager = new GridLayoutManager(view.getContext(), 1, GridLayoutManager.VERTICAL, false);
-
         recyclerView.setLayoutManager(layoutManager);
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
-
 
         API_Interface apiService = API_Client.getClient().create(API_Interface.class);
         Call<GenreCatalog> callAllGenres = apiService.getAllGenres();
@@ -126,6 +119,9 @@ public class MovieFragment extends Fragment {
                 assert response.body() != null;
                 movie_list = response.body().getResults();
                 customAdapter = new CustomAdapterMovie(view.getContext(), movie_list, mainActivityViewModel, genre_dictionary, startForResult, R.layout.item_layout);
+                mainActivityViewModel.getFavMovie().observe(getViewLifecycleOwner(), favMovieList -> {
+                    customAdapter.notifyDataSetChanged();
+                });
                 recyclerView.setAdapter(customAdapter);
                 displayListOfMovies(movie_list);
 
